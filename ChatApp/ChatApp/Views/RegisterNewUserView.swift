@@ -58,7 +58,7 @@ struct RegisterNewUserView: View {
                         .autocapitalization(.none)
                     
                     Button {
-                        let auth = LoginAuth(email_param: email, password_param: password)
+                        var auth = LoginAuth(email_param: email, password_param: password)
                         if self.password == ""
                            || self.password2 == ""
                            || self.email == "" {
@@ -67,8 +67,11 @@ struct RegisterNewUserView: View {
                         } else {
                             if(self.password == self.password2) {
                                 self.isHidden2 = true
-                                if !auth.login() {
-                                    if auth.registerNewUser() {
+                                auth.login()
+                                
+                                if !auth.loginUser {
+                                    auth.registerNewUser()
+                                    if auth.createUser {
                                         // if register successful
                                         self.isHidden = true
                                         showLoginView = true
@@ -78,8 +81,10 @@ struct RegisterNewUserView: View {
                                         self.isHidden = false
                                     }
                                 } else {
+                                    auth.logout()
                                     self.isHidden3 = false
                                 }
+                                
                             } else {
                                 self.isHidden2 = false
                             }

@@ -51,7 +51,9 @@ struct LoginView: View {
                     showNextView = false
                     let auth = LoginAuth(email_param: email, password_param: password)
                     
-                    if auth.login() && self.email != "" && self.password != "" {
+                    auth.login()
+                    
+                    if  auth.loginUser && self.email != "" && self.password != "" {
                         // if login successful
                         self.isHidden = true
                         print("logging in...")

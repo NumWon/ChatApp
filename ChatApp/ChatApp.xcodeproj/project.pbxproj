@@ -13,6 +13,9 @@
 		18252A292A3A43B600C55D61 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 18252A282A3A43B600C55D61 /* FirebaseFirestore */; };
 		18252A2B2A3A43B600C55D61 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 18252A2A2A3A43B600C55D61 /* FirebaseFirestoreSwift */; };
 		18252A2E2A3A65EC00C55D61 /* RegisterNewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18252A2D2A3A65EC00C55D61 /* RegisterNewUserView.swift */; };
+		184F224E2A4215B300DA0CB7 /* UsersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F224D2A4215B300DA0CB7 /* UsersManager.swift */; };
+		184F22502A42172C00DA0CB7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F224F2A42172C00DA0CB7 /* User.swift */; };
+		184F22522A421E8D00DA0CB7 /* UserLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F22512A421E8D00DA0CB7 /* UserLookup.swift */; };
 		189428932A3927BA0021A86C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189428922A3927BA0021A86C /* LoginView.swift */; };
 		18F6DD712A37CAE30089AE4F /* ChatAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6DD702A37CAE30089AE4F /* ChatAppApp.swift */; };
 		18F6DD732A37CAE30089AE4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6DD722A37CAE30089AE4F /* ContentView.swift */; };
@@ -31,6 +34,9 @@
 		18252A212A3A3BD300C55D61 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		18252A232A3A420000C55D61 /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		18252A2D2A3A65EC00C55D61 /* RegisterNewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewUserView.swift; sourceTree = "<group>"; };
+		184F224D2A4215B300DA0CB7 /* UsersManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersManager.swift; sourceTree = "<group>"; };
+		184F224F2A42172C00DA0CB7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		184F22512A421E8D00DA0CB7 /* UserLookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookup.swift; sourceTree = "<group>"; };
 		189428922A3927BA0021A86C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		18F6DD6D2A37CAE30089AE4F /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18F6DD702A37CAE30089AE4F /* ChatAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppApp.swift; sourceTree = "<group>"; };
@@ -94,12 +100,13 @@
 				18F6DD722A37CAE30089AE4F /* ContentView.swift */,
 				18F6DD912A3836610089AE4F /* MessagesManager.swift */,
 				18F6DD862A37DDFC0089AE4F /* Extensions.swift */,
+				184F224D2A4215B300DA0CB7 /* UsersManager.swift */,
+				18252A232A3A420000C55D61 /* Authorization.swift */,
 				18252A2C2A3A65D300C55D61 /* Views */,
 				18F6DD812A37DAD10089AE4F /* Models */,
 				18F6DD7E2A37D5FB0089AE4F /* Components */,
 				18F6DD742A37CAE60089AE4F /* Assets.xcassets */,
 				18F6DD762A37CAE60089AE4F /* Preview Content */,
-				18252A232A3A420000C55D61 /* Authorization.swift */,
 			);
 			path = ChatApp;
 			sourceTree = "<group>";
@@ -126,6 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				18F6DD822A37DAEE0089AE4F /* Message.swift */,
+				184F224F2A42172C00DA0CB7 /* User.swift */,
+				184F22512A421E8D00DA0CB7 /* UserLookup.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -215,6 +224,9 @@
 				18252A222A3A3BD300C55D61 /* ChatView.swift in Sources */,
 				18F6DD832A37DAEE0089AE4F /* Message.swift in Sources */,
 				18252A242A3A420000C55D61 /* Authorization.swift in Sources */,
+				184F22502A42172C00DA0CB7 /* User.swift in Sources */,
+				184F224E2A4215B300DA0CB7 /* UsersManager.swift in Sources */,
+				184F22522A421E8D00DA0CB7 /* UserLookup.swift in Sources */,
 				189428932A3927BA0021A86C /* LoginView.swift in Sources */,
 				18F6DD922A3836610089AE4F /* MessagesManager.swift in Sources */,
 				18F6DD892A37DF600089AE4F /* MessageField.swift in Sources */,
