@@ -18,6 +18,8 @@ struct RegisterNewUserView: View {
     @State private var isHidden4: Bool = true
     @State private var showLoginView: Bool = false
     
+    @State private var auth = LoginAuth()
+    
     var body: some View {
         
         NavigationStack {
@@ -58,7 +60,7 @@ struct RegisterNewUserView: View {
                         .autocapitalization(.none)
                     
                     Button {
-                        var auth = LoginAuth(email_param: email, password_param: password)
+//                        var auth = LoginAuth(email_param: email, password_param: password)
                         if self.password == ""
                            || self.password2 == ""
                            || self.email == "" {
@@ -67,10 +69,10 @@ struct RegisterNewUserView: View {
                         } else {
                             if(self.password == self.password2) {
                                 self.isHidden2 = true
-                                auth.login()
+                                auth.login(email_param: email, password_param: password)
                                 
                                 if !auth.loginUser {
-                                    auth.registerNewUser()
+                                    auth.registerNewUser(email_param: email, password_param: password)
                                     if auth.createUser {
                                         // if register successful
                                         self.isHidden = true

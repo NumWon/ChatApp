@@ -10,9 +10,12 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
+//    @State private var statusMessage: String = ""
     
     @State private var isHidden: Bool = true
     @State private var showNextView: Bool = false
+    
+    @StateObject var auth = LoginAuth()
     
     var body: some View {
         NavigationStack {
@@ -49,20 +52,7 @@ struct LoginView: View {
                 
                 Button {
                     showNextView = false
-                    let auth = LoginAuth(email_param: email, password_param: password)
-                    
-                    auth.login()
-                    
-                    if  auth.loginUser && self.email != "" && self.password != "" {
-                        // if login successful
-                        self.isHidden = true
-                        print("logging in...")
-                        showNextView = true
-                    } else {
-                        // display error message if login fail
-                        self.isHidden = false
-                        print("Failed to login")
-                    }
+                    auth.login(email_param: email, password_param: password)
                 } label: {
                     Text("Login")
                         .font(.title3)
@@ -77,7 +67,8 @@ struct LoginView: View {
                 .padding(.horizontal, 80)
                 
                 if !isHidden {
-                    Text("Incorrect Email/Password. Please try again.")
+//                    Text("Incorrect Email/Password. Please try again.")
+                    Text(auth.statusMessage)
                         .foregroundColor(.red)
                         .font(.callout)
                         .padding(.bottom)
@@ -106,8 +97,9 @@ struct LoginView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
             .background(Color("BackColour"))
+            .environmentObject(auth)
             .navigationDestination(
-                isPresented: $showNextView) {
+                isPresented: $auth.loginUser) {
                     ChatView()
                 }
         }
