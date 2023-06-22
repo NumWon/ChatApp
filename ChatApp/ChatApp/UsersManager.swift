@@ -43,6 +43,5 @@ class UsersManager: ObservableObject {
     }
     
     func createNewChat() {
-//        let newChat = User(id: <#T##String#>, uid: <#T##String#>, name: <#T##String#>, email: <#T##String#>, contacts: <#T##arg#>)
     }
 }

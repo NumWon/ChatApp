@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RegisterNewUserView: View {
+    @State private var username: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var password2: String = ""
@@ -15,10 +16,9 @@ struct RegisterNewUserView: View {
     @State private var isHidden: Bool = true
     @State private var isHidden2: Bool = true
     @State private var isHidden3: Bool = true
-    @State private var isHidden4: Bool = true
     @State private var showLoginView: Bool = false
     
-    @State private var auth = LoginAuth()
+    @StateObject var auth = LoginAuth()
     
     var body: some View {
         
@@ -34,61 +34,62 @@ struct RegisterNewUserView: View {
                     Divider()
                         .overlay(.white)
                         .padding(.bottom, 20)
+                    Group {
+                        TextField("Enter username *", text: $username)
+                            .font(.title3)
+                            .padding()
+                            .background(.white)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(50.0)
+                            .autocapitalization(.none)
                         
-                    TextField("Enter email address *", text: $email)
-                        .font(.title3)
-                        .padding()
-                        .background(.white)
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(50.0)
-                        .autocapitalization(.none)
-                    
-                    SecureField("Enter password *", text: $password)
-                        .font(.title3)
-                        .padding()
-                        .background(.white)
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(50.0)
-                        .autocapitalization(.none)
-                   
-                    SecureField("Re-enter password *", text: $password2)
-                        .font(.title3)
-                        .padding()
-                        .background(.white)
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(50.0)
-                        .autocapitalization(.none)
+                        TextField("Enter email address *", text: $email)
+                            .font(.title3)
+                            .padding()
+                            .background(.white)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(50.0)
+                            .autocapitalization(.none)
+                        
+                        SecureField("Enter password *", text: $password)
+                            .font(.title3)
+                            .padding()
+                            .background(.white)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(50.0)
+                            .autocapitalization(.none)
+                       
+                        SecureField("Re-enter password *", text: $password2)
+                            .font(.title3)
+                            .padding()
+                            .background(.white)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(50.0)
+                            .autocapitalization(.none)
+                    }
                     
                     Button {
-//                        var auth = LoginAuth(email_param: email, password_param: password)
                         if self.password == ""
                            || self.password2 == ""
                            || self.email == "" {
-                            isHidden4 = false
+                            isHidden3 = false
                             
                         } else {
                             if(self.password == self.password2) {
-                                self.isHidden2 = true
+                                self.isHidden = true
                                 auth.login(email_param: email, password_param: password)
                                 
                                 if !auth.loginUser {
-                                    auth.registerNewUser(email_param: email, password_param: password)
-                                    if auth.createUser {
-                                        // if register successful
-                                        self.isHidden = true
-                                        showLoginView = true
-                                        print("Creating new user...")
-                                    } else {
-                                        // display error message if register fail
-                                        self.isHidden = false
-                                    }
+                                    auth.registerNewUser(email_param: email, password_param: password,
+                                    username_param: username)
                                 } else {
                                     auth.logout()
-                                    self.isHidden3 = false
+                                    self.isHidden2 = false
                                 }
                                 
                             } else {
-                                self.isHidden2 = false
+                                // error for passwords not matching
+                                self.isHidden = false
                             }
                         }
                     } label: {
@@ -104,25 +105,27 @@ struct RegisterNewUserView: View {
                     .padding(.top, 20)
                     .padding(.horizontal, 80)
                     
+                    Text(auth.statusMessageNewUser)
+                        .foregroundColor(Color("Red"))
+                        .font(.callout)
+                        .padding(.bottom)
+                        .frame(maxWidth: .infinity)
+                    
                     if !isHidden {
-                        Text("**Something went wrong when trying to create a new user. Try again.")
-                            .foregroundColor(Color("Red"))
-                            .font(.callout)
-                            .padding(.bottom)
-                            .frame(maxWidth: .infinity)
-                    } else if !isHidden2 {
                         Text("Passwords don't match. Please check again.")
                             .foregroundColor(Color("Red"))
                             .font(.callout)
                             .padding(.bottom)
                             .frame(maxWidth: .infinity)
-                    } else if !isHidden3 {
+                    }
+                    if !isHidden2 {
                         Text("Email already in use or Invalid email")
                             .foregroundColor(Color("Red"))
                             .font(.callout)
                             .padding(.bottom)
                             .frame(maxWidth: .infinity)
-                    } else if !isHidden4 {
+                    }
+                    if !isHidden3 {
                         Text("*All fields must be filled")
                             .foregroundColor(Color("Red"))
                             .font(.callout)
@@ -136,8 +139,9 @@ struct RegisterNewUserView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
             .background(Color("BackColour"))
+            .environmentObject(auth)
             .navigationDestination(
-                isPresented: $showLoginView) {
+                isPresented: $auth.createUser) {
                     LoginView()
                 }
         }

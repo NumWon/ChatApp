@@ -66,14 +66,11 @@ struct LoginView: View {
                 .padding(.top, 20)
                 .padding(.horizontal, 80)
                 
-                if !isHidden {
-//                    Text("Incorrect Email/Password. Please try again.")
-                    Text(auth.statusMessage)
-                        .foregroundColor(.red)
-                        .font(.callout)
-                        .padding(.bottom)
-                        .frame(maxWidth: .infinity)
-                }
+                Text(auth.statusMessage)
+                    .foregroundColor(.red)
+                    .font(.callout)
+                    .padding(.bottom)
+                    .frame(maxWidth: .infinity)
 
                 NavigationLink(
                     destination:
@@ -100,7 +97,7 @@ struct LoginView: View {
             .environmentObject(auth)
             .navigationDestination(
                 isPresented: $auth.loginUser) {
-                    ChatView()
+                    ChatView().navigationBarBackButtonHidden()
                 }
         }
     }

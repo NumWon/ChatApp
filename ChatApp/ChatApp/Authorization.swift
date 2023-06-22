@@ -14,20 +14,16 @@ import FirebaseFirestoreSwift
 class LoginAuth: ObservableObject {
     @Published private(set) var email = ""
     @Published private(set) var password = ""
-    @Published private(set) var name = ""
+    @Published private(set) var username = ""
     @Published private(set) var uid: String = ""
     @Published private(set) var statusMessage: String = ""
+    @Published private(set) var statusMessageNewUser: String = ""
     @Published public var loginUser: Bool = false
-    @Published private(set) var createUser: Bool = false
+    @Published public var createUser: Bool = false
     
-//    var handle: AuthStateDidChangeListenerHandle?
     
     let db = Firestore.firestore()
     
-//    init(email_param: String, password_param: String) {
-//        self.email = email_param
-//        self.password = password_param
-//    }
     public init() {}
 
     
@@ -35,11 +31,10 @@ class LoginAuth: ObservableObject {
     func login(email_param: String, password_param: String) {
         self.email = email_param
         self.password = password_param
-//        let root = Firestore.firestore() // instance of database
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Failed to login user: ", error.localizedDescription)
-                self.statusMessage = "Failed to login user: \(error)"
+                self.statusMessage = "\(error.localizedDescription)"
                 return
             } else {
                 print("Successfully logged in as user: \(result?.user.uid ?? "")")
@@ -58,7 +53,7 @@ class LoginAuth: ObservableObject {
             self.statusMessage = ""
             self.email = ""
             self.password = ""
-            self.name = ""
+            self.username = ""
             
             try Auth.auth().signOut()
         } catch let error{
@@ -68,28 +63,42 @@ class LoginAuth: ObservableObject {
     
     
     // need to change view based on change in var of self.createUser
-    func registerNewUser(email_param: String, password_param: String) {
+    func registerNewUser(email_param: String, password_param: String, username_param: String) {
         self.email = email_param
         self.password = password_param
+        self.username = username_param
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if error != nil {
                 self.createUser = false
-                print(error?.localizedDescription ?? "")
+                print("Failed to create user: ", error?.localizedDescription ?? "")
+                
             } else {
-                self.createUser = true
                 let uid = authResult?.user.uid ?? ""
-                self.addToDatabase(uid: uid, name: self.name, email: self.email)
+                self.addToDatabase(uid: uid, username: self.username, email: self.email)
             }
         }
     }
     
-    func addToDatabase(uid: String, name: String, email: String) {
+    func addToDatabase(uid: String, username: String, email: String) {
         do {
-            let newUser = User(id: "\(UUID())", uid: uid, name: name, email: email)
+            let newUser = User(id: "\(UUID())", uid: uid, username: username, email: email)
             try db.collection("users").document().setData(from: newUser)
+            
+            self.createUser = true
         } catch let error {
             print("Error in adding user to Firestore Database: \(error)")
+            self.statusMessageNewUser = "Error adding user to database"
+            
+//            let user = Auth.auth().currentUser
+//            user?.delete { error in
+//                if let error = error {
+//                    print("Error deleting account: \(error.localizedDescription)")
+//                } else {
+//                    print("Deleted user account")
+//                }
+//
+//            }
         }
     }
 }
