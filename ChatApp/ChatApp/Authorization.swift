@@ -38,10 +38,9 @@ class LoginAuth: ObservableObject {
                 return
             } else {
                 print("Successfully logged in as user: \(result?.user.uid ?? "")")
-                self.uid = result?.user.uid ?? "abc123"
                 self.loginUser = true
                 
-                self.statusMessage = "Successfully logged in as user: \(result?.user.uid ?? "")"
+//                self.statusMessage = "Successfully logged in as user: \(result?.user.uid ?? "")"
             }
         }
     }
@@ -83,7 +82,7 @@ class LoginAuth: ObservableObject {
     func addToDatabase(uid: String, username: String, email: String) {
         do {
             let newUser = User(id: "\(UUID())", uid: uid, username: username, email: email)
-            try db.collection("users").document().setData(from: newUser)
+            try db.collection("users").document("\(uid)").setData(from: newUser)
             
             self.createUser = true
         } catch let error {

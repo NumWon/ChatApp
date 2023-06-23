@@ -97,7 +97,8 @@ struct LoginView: View {
             .environmentObject(auth)
             .navigationDestination(
                 isPresented: $auth.loginUser) {
-                    ChatView().navigationBarBackButtonHidden()
+//                    ChatView().navigationBarBackButtonHidden()
+                    UsersView().navigationBarBackButtonHidden()
                 }
         }
     }

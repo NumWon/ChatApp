@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct TitleRow: View {
-    var imageUrl = URL(string: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")
-    var name = "Name"
+//    var imageUrl = URL(string: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")
+//    var name = "Name"
+    var imageUrl: URL
+    var name: String
+//    var content: () -> Content
+    
+    init(imageUrl: URL, name: String) {
+        self.imageUrl = imageUrl
+        self.name = name
+    }
+    
     var body: some View {
         HStack(spacing: 20) {
             AsyncImage(url: imageUrl) { image in
@@ -43,7 +52,7 @@ struct TitleRow: View {
 
 struct TitleRow_Previews: PreviewProvider {
     static var previews: some View {
-        TitleRow()
+        TitleRow(imageUrl: URL(string: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")!, name: "Naumaan Sheikh")
             .background(Color("Peach"))
     }
 }
