@@ -14,14 +14,24 @@ struct UsersView: View {
     var body: some View {
         VStack {
             TitleRow(imageUrl: self.imageUrl!, name: self.usersManager.currentUser.username)
+            Group {
+                Divider()
+                // search for users in database
+                Text("Create New Chat")
+                    .foregroundColor(.blue)
+                Divider()
+            }
+            
             ScrollView {
-                ForEach(usersManager.users, id: \.id) { user in
-                    
+//                UserField(user: self.usersManager.currentUser)
+                ForEach(usersManager.contacts){ user in
+                    UserField(user: user)
                 }
+
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color("BackColour"))
+        .background(Color("Peach"))
     }
 }
 

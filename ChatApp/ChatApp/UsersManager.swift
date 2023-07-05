@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 
 class UsersManager: ObservableObject {
     @Published private(set) var users: [User] = []
-//    @Published private(set) var currentUser = Auth.auth().currentUser
-    
+    @Published private(set) var contacts: [User] = []
+    @Published var queriedUsers: [User] = []
     @Published public var currentUser: User = User (
         id: "",
         uid: "",
@@ -22,7 +22,6 @@ class UsersManager: ObservableObject {
         email: "",
         contacts: [])
 //    @Published private(set) var lastUser = ""
-    
     
     let db = Firestore.firestore()
     
@@ -36,6 +35,7 @@ class UsersManager: ObservableObject {
                 self.currentUser.uid = data!["uid"] as? String ?? ""
                 self.currentUser.email = data!["email"] as? String ?? ""
                 self.currentUser.username = data!["username"] as? String ?? ""
+                self.currentUser.contacts = data!["contacts"] as? [String] ?? []
             } else {
                 print("Document doesn't exist")
             }
@@ -44,10 +44,11 @@ class UsersManager: ObservableObject {
         getUsers()
     }
     
+    // find User profiles of all users in contacts and add to the users
     func getUsers() {
         db.collection("users").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
-                print("Error fetching documents: \(String(describing: error))")
+                print("Error fethcing documents: \(String(describing: error))")
                 return
             }
             
@@ -58,15 +59,47 @@ class UsersManager: ObservableObject {
                     print("Error decoding document into User: \(error)")
                     return nil
                 }
+                
             }
-//            self.users.sort {$0.timestamp > $1.timestamp }
-//            if let id = self.users.last?.id {
-//                self.lastUser = id
-//            }
+        }
+        
+        // fill contacts array with User of all contacts
+        for i in 0..<currentUser.contacts.count {
+            let contactUID = currentUser.contacts[i]
+            let doc = db.collection("users").document("\(contactUID)")
+            doc.getDocument { document, error in
+                if let document = document, document.exists {
+                    let data = document.data()
+                    self.contacts[i].email = data!["email"] as? String ?? ""
+                    self.contacts[i].username = data!["username"] as? String ?? ""
+                }
+            }
         }
     }
     
-    func createNewChat() {
-        
+    func createNewChat(keyword: String) {
+        db.collection("users").whereField("keywordsForLookup", arrayContains: keyword).getDocuments { querySnapshot, error in
+            guard let documents = querySnapshot?.documents, error == nil else { return }
+            self.queriedUsers = documents.compactMap { queryDocumentSnapshot in
+                try? queryDocumentSnapshot.data(as: User.self)
+                
+            }
+            
+        }
     }
 }
+//-----------------------------------------------------------------------
+
+//    func getContacts() {
+//        let refToRead = self.db.collection("users/").document("\(currentUser.uid)")
+//        refToRead.getDocument(completion: { documentSnapshot, error in
+//            if let err = error {
+//                print("Error fetching document: \(String(describing: error))")
+//                return
+//            }
+//
+//            if let doc = documentSnapshot {
+//                self.currentUser.contacts = doc.get("contacts") as! [String]
+//            }
+//        })
+//    }

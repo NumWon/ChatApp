@@ -20,14 +20,21 @@ struct UserField: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 50, height: 50)
                         .cornerRadius(50)
+                        .padding(.horizontal, 5)
                 } placeholder: {
                     ProgressView()
                 }
-                Text("asdasdas")
+//                Text(user.username)
+                Text("naumaan sheikh")
+                    .font(.title2)
+                    .bold()
+                
             }
-            Divider()
+//            Divider()
         }
         .padding()
+        .frame(maxWidth: .infinity)
+        .border(.black, width: 1)
     }
 }
 
