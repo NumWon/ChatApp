@@ -28,7 +28,6 @@ struct UserField: View {
                 Text("naumaan sheikh")
                     .font(.title2)
                     .bold()
-                
             }
 //            Divider()
         }

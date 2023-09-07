@@ -83,6 +83,7 @@ class LoginAuth: ObservableObject {
         do {
             let newUser = User(id: "\(UUID())", uid: uid, username: username, email: email)
             try db.collection("users").document("\(uid)").setData(from: newUser)
+            db.collection("users").document(uid).updateData(["keywordsForLookup": newUser.keywordsForLookup])
             
             self.createUser = true
         } catch let error {

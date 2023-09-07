@@ -20,7 +20,8 @@ struct User: Identifiable, Codable {
 
 extension String {
     
-    /// describing: E.g. Mark -> ["M", "Ma", "Mar", "Mark"]
+    /// describing: For a given string, create an array of substrings
+    /// E.g. Mark -> ["M", "Ma", "Mar", "Mark"]
     func generateStringSequence() -> [String] {
         
         guard self.count > 0 else {return [] }
