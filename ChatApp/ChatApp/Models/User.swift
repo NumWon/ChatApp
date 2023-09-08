@@ -12,7 +12,7 @@ struct User: Identifiable, Codable {
     var uid: String
     var username: String
     var email: String
-    var contacts = [String]()
+//    var contacts = [String]()
     var keywordsForLookup: [String] {
         [self.username.generateStringSequence()].flatMap { $0 }
     }

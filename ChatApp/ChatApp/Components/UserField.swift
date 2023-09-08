@@ -15,21 +15,29 @@ struct UserField: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                AsyncImage(url: imageUrl) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(50)
-                        .padding(.horizontal, 5)
-                } placeholder: {
-                    ProgressView()
-                }
-//                Text(user.username)
-                Text("naumaan sheikh")
+//                AsyncImage(url: imageUrl) { image in
+//                    image.resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(width: 50, height: 50)
+//                        .cornerRadius(50)
+//                        .padding(.horizontal, 5)
+//                } placeholder: {
+//                    ProgressView()
+//                }
+                Image("ProfilePic")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 50, height: 50)
+                    .cornerRadius(50)
+                    .padding(.horizontal, 5)
+                Text("Naumaan Sheikh")
                     .font(.title2)
                     .bold()
+                Text(user.username)
+                    .font(.title2)
+                    .bold()
+                Spacer()
             }
-//            Divider()
         }
         .padding()
         .frame(maxWidth: .infinity)

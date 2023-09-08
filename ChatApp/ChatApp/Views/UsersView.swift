@@ -19,11 +19,12 @@ struct UsersView: View {
                 // search for users in database
                 Text("Create New Chat")
                     .foregroundColor(.blue)
-                Divider()
+//                Divider()
             }
             
             ScrollView {
 //                UserField(user: self.usersManager.currentUser)
+//                UserField(user: self.usersManager.contacts[0])
                 ForEach(usersManager.contacts){ user in
                     UserField(user: user)
                 }

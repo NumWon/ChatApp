@@ -19,14 +19,16 @@ class UsersManager: ObservableObject {
         id: "",
         uid: "",
         username: "",
-        email: "",
-        contacts: [])
+        email: ""
+//        , contacts: []
+    )
 //    @Published private(set) var lastUser = ""
     
     let db = Firestore.firestore()
     
     init() {
         
+        // fill self.currentUser with proper values
         let doc = db.collection("users").document("\(Auth.auth().currentUser?.uid ?? "")")
         doc.getDocument { document, error in
             if let document = document, document.exists {
@@ -35,45 +37,37 @@ class UsersManager: ObservableObject {
                 self.currentUser.uid = data!["uid"] as? String ?? ""
                 self.currentUser.email = data!["email"] as? String ?? ""
                 self.currentUser.username = data!["username"] as? String ?? ""
-                self.currentUser.contacts = data!["contacts"] as? [String] ?? []
+//                self.currentUser.contacts = data!["contacts"] as? [String] ?? []
             } else {
                 print("Document doesn't exist")
             }
             
         }
+        
         getUsers()
     }
     
     // find User profiles of all users in contacts and add to the users
     func getUsers() {
-        db.collection("users").addSnapshotListener { querySnapshot, error in
+        // fill self.contacts with list of contacts in currentUser's contact list
+        db.collection("users/\(Auth.auth().currentUser?.uid ?? "")/contacts").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
-                print("Error fethcing documents: \(String(describing: error))")
+                print("Error fetching documents: \(String(describing: error))")
                 return
             }
             
-            self.users = documents.compactMap { document -> User? in
+            self.contacts = documents.compactMap { document -> User? in
                 do {
                     return try document.data(as: User.self)
                 } catch {
                     print("Error decoding document into User: \(error)")
                     return nil
                 }
-                
             }
         }
-        
-        // fill contacts array with User of all contacts
-        for i in 0..<currentUser.contacts.count {
-            let contactUID = currentUser.contacts[i]
-            let doc = db.collection("users").document("\(contactUID)")
-            doc.getDocument { document, error in
-                if let document = document, document.exists {
-                    let data = document.data()
-                    self.contacts[i].email = data!["email"] as? String ?? ""
-                    self.contacts[i].username = data!["username"] as? String ?? ""
-                }
-            }
+        var temp = 0
+        for _ in self.contacts {
+            temp += 1
         }
     }
     

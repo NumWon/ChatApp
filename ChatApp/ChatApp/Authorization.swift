@@ -79,6 +79,7 @@ class LoginAuth: ObservableObject {
         }
     }
     
+    
     func addToDatabase(uid: String, username: String, email: String) {
         do {
             let newUser = User(id: "\(UUID())", uid: uid, username: username, email: email)
@@ -89,7 +90,22 @@ class LoginAuth: ObservableObject {
         } catch let error {
             print("Error in adding user to Firestore Database: \(error)")
             self.statusMessageNewUser = "Error adding user to database"
+        }
+        
+        do {
+            let newUser = User(id: "\(UUID())", uid: uid, username: username, email: email)
+            try db.collection("users/\(uid)/contacts").document("\(uid)").setData(from: newUser)
             
+        } catch let error {
+            print("Error in adding contact to Firestore Database: \(error)")
+            self.statusMessageNewUser = "Error adding contact to database"
+        }
+    }
+}
+
+
+
+// DELETE USER CODE
 //            let user = Auth.auth().currentUser
 //            user?.delete { error in
 //                if let error = error {
@@ -99,6 +115,3 @@ class LoginAuth: ObservableObject {
 //                }
 //
 //            }
-        }
-    }
-}
